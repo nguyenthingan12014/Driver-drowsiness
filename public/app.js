@@ -50,13 +50,10 @@ let currentFps = 0;
 
 // Các phần tử DOM
 const DOM = {
-  // Status & Badges
-  aiModelStatus: document.getElementById('ai-model-status'),
-  backendStatus: document.getElementById('backend-status'),
+  // Badges & Camera Info
   stateBadge: document.getElementById('state-badge'),
   stateText: document.getElementById('state-text'),
   fpsDisplay: document.getElementById('fps-display'),
-  audioStatusPill: document.getElementById('audio-status-pill'),
 
   // Camera & Visuals
   cameraWrapper: document.getElementById('camera-wrapper'),
@@ -86,7 +83,6 @@ const DOM = {
   // Stats
   statLevel1Count: document.getElementById('stat-level1-count'),
   statLevel2Count: document.getElementById('stat-level2-count'),
-  statTotalAlerts: document.getElementById('stat-total-alerts'),
   statRuntime: document.getElementById('stat-runtime'),
 
   // Logs
