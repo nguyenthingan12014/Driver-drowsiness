@@ -1,5 +1,13 @@
 [
   {
+    "id": "mwhr8osnf2ba",
+    "timestamp": "18:32:04 15/11/2026",
+    "level": "Mức 1",
+    "duration": "1.5s",
+    "confidence": "95.0%",
+    "note": "Test verification audit"
+  },
+  {
     "id": "mwhlkf01exh6",
     "timestamp": "15:53:14 15/11/2026",
     "level": "Mức 1",
