@@ -1,0 +1,90 @@
+[
+  {
+    "id": "mwhlkf01exh6",
+    "timestamp": "15:53:14 15/11/2026",
+    "level": "Mức 1",
+    "duration": "1.5s",
+    "confidence": "98.2%",
+    "note": "Chớm buồn ngủ (nhắc nhở nhẹ)"
+  },
+  {
+    "id": "mwhljx8dxhtg",
+    "timestamp": "15:52:51 15/11/2026",
+    "level": "Mức 1",
+    "duration": "1.5s",
+    "confidence": "99.9%",
+    "note": "Chớm buồn ngủ (nhắc nhở nhẹ)"
+  },
+  {
+    "id": "mwhljegjzzbk",
+    "timestamp": "15:52:26 15/11/2026",
+    "level": "Mức 1",
+    "duration": "1.5s",
+    "confidence": "100.0%",
+    "note": "Chớm buồn ngủ (nhắc nhở nhẹ)"
+  },
+  {
+    "id": "mwhlj8d1qd2n",
+    "timestamp": "15:52:19 15/11/2026",
+    "level": "Mức 1",
+    "duration": "1.5s",
+    "confidence": "99.4%",
+    "note": "Chớm buồn ngủ (nhắc nhở nhẹ)"
+  },
+  {
+    "id": "mwhlj5zreuxe",
+    "timestamp": "15:52:16 15/11/2026",
+    "level": "Mức 1",
+    "duration": "1.5s",
+    "confidence": "99.9%",
+    "note": "Chớm buồn ngủ (nhắc nhở nhẹ)"
+  },
+  {
+    "id": "mwhlih14qru5",
+    "timestamp": "15:51:43 15/11/2026",
+    "level": "Mức 1",
+    "duration": "1.5s",
+    "confidence": "99.4%",
+    "note": "Chớm buồn ngủ (nhắc nhở nhẹ)"
+  },
+  {
+    "id": "mwhlidiwtdzh",
+    "timestamp": "15:51:39 15/11/2026",
+    "level": "Mức 1",
+    "duration": "1.5s",
+    "confidence": "99.9%",
+    "note": "Chớm buồn ngủ (nhắc nhở nhẹ)"
+  },
+  {
+    "id": "mwhl2a540pmk",
+    "timestamp": "15:39:08 15/11/2026",
+    "level": "Mức 2",
+    "duration": "32.4s",
+    "confidence": "88.5%",
+    "note": "Ngủ gật trên 30s"
+  },
+  {
+    "id": "mwhj2dqpmpcf",
+    "timestamp": "14:43:13 15/11/2026",
+    "level": "Mức 2",
+    "duration": "2.0s",
+    "confidence": "99.5%",
+    "note": "Ngủ gật kéo dài trên 2s"
+  },
+  {
+    "id": "mwhj285kr3eg",
+    "timestamp": "14:43:06 15/11/2026",
+    "level": "Mức 2",
+    "duration": "2.0s",
+    "confidence": "98.9%",
+    "note": "Ngủ gật kéo dài trên 2s"
+  },
+  {
+    "id": "mwhj1aaxelma",
+    "timestamp": "14:42:22 15/11/2026",
+    "level": "Mức 2",
+    "duration": "2.0s",
+    "confidence": "100.0%",
+    "note": "Ngủ gật kéo dài trên 2s"
+  }
+]

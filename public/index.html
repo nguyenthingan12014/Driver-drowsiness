@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Web AI nhận biết buồn ngủ • Realtime AI Detection</title>
+  
+  <!-- Nhúng font chữ Inter (400, 500, 600, 700) và JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+  
+  <link rel="stylesheet" href="style.css">
+
+  <!-- TensorFlow.js và Teachable Machine Image Library -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.7.4/dist/tf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+</head>
+<body class="light-blue-theme">
+  <!-- Toast thông báo -->
+  <div id="toast-container" class="toast-container"></div>
+
+  <div class="app-layout">
+    <!-- HEADER: 3 DÒNG XẾP DỌC, GỌN GÀNG -->
+    <header class="app-header">
+      <div class="header-left">
+        <div class="header-text-block">
+          <span class="eyebrow-text">TEACHABLE MACHINE • DROWSINESS DETECTION</span>
+          <h1 class="header-title">Web AI nhận biết buồn ngủ</h1>
+          <p class="header-subtitle">Nhận diện trạng thái mệt mỏi theo thời gian thực từ luồng Webcam và kích hoạt hệ thống cảnh báo âm thanh 2 cấp độ thông minh.</p>
+        </div>
+      </div>
+    </header>
+
+    <!-- BỐ CỤC 2 CỘT NỘI DUNG CHÍNH -->
+    <main class="main-grid">
+      <!-- CỘT TRÁI: KHUNG CAMERA VÀ ĐIỀU KHIỂN -->
+      <section class="card left-column">
+        <div class="card-header-bar">
+          <div class="title-with-fps">
+            <h2 class="card-title">Luồng Giám Sát Camera</h2>
+            <span class="fps-badge" id="fps-display">0 FPS</span>
+          </div>
+          <!-- Nhãn trạng thái SẴN SÀNG / TỈNH TÁO -->
+          <div class="state-badge normal" id="state-badge">
+            <span class="state-indicator-dot"></span>
+            <span id="state-text">SẴN SÀNG</span>
+          </div>
+        </div>
+
+        <!-- Khung hiển thị webcam bo góc 20px với nhãn Camera góc trên bên trái -->
+        <div class="camera-wrapper state-normal" id="camera-wrapper">
+          <div class="floating-camera-tag">
+            <span class="tag-dot" id="camera-tag-dot"></span>
+            Camera
+          </div>
+
+          <!-- Overlay đếm giây nhắm mắt liên tục -->
+          <div class="timer-overlay hidden" id="timer-overlay">
+            <span>Nhắm mắt liên tục: </span>
+            <strong id="timer-seconds">0.0s</strong>
+          </div>
+
+          <!-- Container chứa video/canvas webcam -->
+          <div id="webcam-container" class="webcam-container">
+            <div class="camera-placeholder" id="camera-placeholder">
+              <div class="placeholder-icon-wrap">
+                <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>
+                  <circle cx="12" cy="13" r="4"/>
+                </svg>
+              </div>
+              <h3 class="placeholder-title">Camera chưa kích hoạt</h3>
+              <p class="placeholder-desc">Nhấn <strong>"Bật Camera & Giám Sát"</strong> bên dưới để bắt đầu luồng nhận diện AI</p>
+            </div>
+          </div>
+
+          <!-- Banner thông báo trực quan nổi trên Camera -->
+          <div class="alert-banner banner-normal" id="alert-banner">
+            <span class="alert-icon" id="alert-icon">✓</span>
+            <span class="alert-message" id="alert-message">Trạng thái: Tỉnh táo</span>
+          </div>
+        </div>
+
+        <!-- Cụm nút điều khiển Camera -->
+        <div class="controls-row">
+          <button class="btn btn-primary" id="btn-start-camera">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <polygon points="5 3 19 12 5 21 5 3"/>
+            </svg>
+            Bật Camera & Giám Sát
+          </button>
+          <button class="btn btn-secondary" id="btn-stop-camera" disabled>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <rect x="6" y="6" width="12" height="12" rx="2"/>
+            </svg>
+            Tắt Camera
+          </button>
+        </div>
+
+        <!-- Các nút Test phản xạ âm thanh -->
+        <div class="test-sound-panel">
+          <span class="panel-label">Thử nghiệm phản xạ âm thanh (Test Audio):</span>
+          <div class="test-btn-grid">
+            <button class="btn btn-outline-warning" id="btn-test-level1">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+              </svg>
+              Test Mức 1 (Ting + Giọng nói)
+            </button>
+            <button class="btn btn-outline-danger" id="btn-test-level2">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+                <path d="M19.07 4.93a10 10 0 0 1 0 14.14"/>
+                <path d="M15.54 8.46a5 5 0 0 1 0 7.07"/>
+              </svg>
+              Test Mức 2 (Còi báo động dồn dập)
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- CỘT PHẢI: TÁCH THÀNH 3 KHUNG THẺ ĐỘC LẬP XẾP DỌC (YÊU CẦU 1) -->
+      <div class="right-column-container">
+        <!-- KHUNG 1: XÁC SUẤT DỰ ĐOÁN AI THỜI GIAN THỰC -->
+        <section class="card right-card-section">
+          <div class="card-header-bar">
+            <h2 class="card-title">Xác Suất Dự Đoán AI Thời Gian Thực</h2>
+            <span class="model-badge">Teachable Machine</span>
+          </div>
+
+          <div class="predictions-group">
+            <!-- Nhãn Buồn ngủ -->
+            <div class="prediction-item">
+              <div class="pred-header">
+                <span class="pred-label">
+                  <span class="dot-indicator danger"></span>
+                  Buồn ngủ
+                </span>
+                <span class="pred-value tabular-number" id="percent-drowsy">0.0%</span>
+              </div>
+              <!-- Thanh tiến trình dày dặn 16-18px -->
+              <div class="progress-track thick-track">
+                <div class="progress-bar bar-drowsy" id="bar-drowsy" style="width: 0%"></div>
+              </div>
+            </div>
+
+            <!-- Nhãn Không buồn ngủ / Tỉnh táo -->
+            <div class="prediction-item">
+              <div class="pred-header">
+                <span class="pred-label">
+                  <span class="dot-indicator success"></span>
+                  Tỉnh táo (Không buồn ngủ)
+                </span>
+                <span class="pred-value tabular-number" id="percent-awake">0.0%</span>
+              </div>
+              <!-- Thanh tiến trình dày dặn 16-18px -->
+              <div class="progress-track thick-track">
+                <div class="progress-bar bar-awake" id="bar-awake" style="width: 0%"></div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- KHUNG 2: HÀNG 3 Ô THẺ THỐNG KÊ (ĐỘC LẬP Ở GIỮA) -->
+        <section class="card right-card-section">
+          <div class="stats-sub-grid">
+            <!-- Ô 1: Cảnh báo Mức 1 -->
+            <div class="sub-stat-card">
+              <span class="sub-stat-number tabular-number" id="stat-level1-count">0</span>
+              <span class="sub-stat-label">Cảnh báo Mức 1</span>
+            </div>
+
+            <!-- Ô 2: Báo động Mức 2 -->
+            <div class="sub-stat-card card-danger-border">
+              <span class="sub-stat-number text-danger tabular-number" id="stat-level2-count">0</span>
+              <span class="sub-stat-label">Báo động Mức 2</span>
+            </div>
+
+            <!-- Ô 3: Thời gian chạy -->
+            <div class="sub-stat-card">
+              <span class="sub-stat-number tabular-number" id="stat-runtime">00:00</span>
+              <span class="sub-stat-label">Thời gian chạy</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- KHUNG 3: BẢNG NHẬT KÝ CẢNH BÁO BUỒN NGỦ (ĐỘC LẬP Ở DƯỚI CÙNG) -->
+        <section class="card right-card-section">
+          <div class="logs-section">
+            <div class="logs-header-row">
+              <div class="logs-title-wrap">
+                <h2 class="card-title">Nhật Ký Cảnh Báo Buồn Ngủ (Logs)</h2>
+                <span class="logs-counter tabular-number" id="logs-count">0</span>
+              </div>
+              <div class="logs-actions-wrap">
+                <!-- Nút Làm mới -->
+                <button class="btn btn-sm btn-subtle" id="btn-refresh-logs" title="Làm mới danh sách">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"/>
+                  </svg>
+                  Làm mới
+                </button>
+                <!-- Nút Xóa -->
+                <button class="btn btn-sm btn-danger-pill" id="btn-clear-logs" title="Xóa toàn bộ lịch sử">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                    <polyline points="3 6 5 6 21 6"/>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/>
+                  </svg>
+                  Xóa
+                </button>
+              </div>
+            </div>
+
+            <div class="table-container">
+              <table class="logs-table">
+                <thead>
+                  <tr>
+                    <th class="col-time">Thời gian</th>
+                    <th class="col-level">Cấp độ</th>
+                    <th class="col-duration">Thời lượng</th>
+                    <th class="col-conf">Độ tin cậy</th>
+                    <th class="col-note">Ghi chú</th>
+                  </tr>
+                </thead>
+                <tbody id="logs-table-body">
+                  <tr class="empty-row">
+                    <td colspan="5">Chưa có bản ghi cảnh báo nào</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+      </div>
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="app-footer">
+      <div class="footer-left">
+        <span>© AI Drowsiness Detection System • Giao diện Light Mode Xanh Dương</span>
+      </div>
+      <div class="footer-right">
+        <span>Google Teachable Machine Image Model</span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

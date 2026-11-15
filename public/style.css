@@ -1,0 +1,1114 @@
+/* ==========================================================================
+   GIAO DIỆN LIGHT MODE XANH DƯƠNG SÁNG DỊU MẮT (SOFT SKY & SEA BLUE)
+   Tối ưu hóa Responsive: Desktop, Tablet (1024px) & Mobile (768px / 480px)
+   Font chữ: Inter | Tabular Numbers | Touch-Friendly Controls
+   ========================================================================== */
+
+:root {
+  /* Nền tổng thể trang: Gradient xanh băng dịu mắt */
+  --bg-page: linear-gradient(135deg, #F0F7FF 0%, #E6F2FE 100%);
+
+  /* Khối thẻ chính (Cards) */
+  --card-bg: #FFFFFF;
+  --card-border: #D6E6F7;
+  --card-radius: 20px;
+  --card-radius-mobile: 16px;
+  --card-shadow: 0 8px 24px rgba(14, 116, 144, 0.06);
+  --card-shadow-hover: 0 12px 30px rgba(14, 116, 144, 0.1);
+
+  /* Thẻ con bên trong (3 ô thống kê) */
+  --sub-card-bg: #F4F9FF;
+  --sub-card-border: #DCEBFA;
+  --sub-card-radius: 14px;
+
+  /* Màu chữ (High Contrast & Dễ đọc) */
+  --text-title: #0F172A;          /* Xanh navy đậm */
+  --text-muted: #475569;          /* Xám xanh */
+  --text-desc: #64748B;           /* Xám xanh mô tả */
+  --text-light: #94A3B8;
+
+  /* Màu nhấn & Nút bấm */
+  --btn-primary-bg: #00A2E8;      /* Xanh dương tươi sáng */
+  --btn-primary-hover: #0284C7;
+  --btn-primary-shadow: 0 4px 14px rgba(0, 162, 232, 0.25);
+
+  --btn-secondary-bg: #FFFFFF;
+  --btn-secondary-border: #CBD5E1;
+  --btn-secondary-text: #334155;
+
+  --btn-danger-bg: #FEF2F2;       /* Đỏ hồng nhạt */
+  --btn-danger-border: #FECACA;
+  --btn-danger-text: #DC2626;
+
+  /* Trạng thái */
+  --state-ready-bg: #ECFDF5;      /* Xanh ngọc nhạt */
+  --state-ready-border: #A7F3D0;
+  --state-ready-text: #059669;
+
+  --color-awake: #10B981;         /* Xanh lá tươi */
+  --color-warning: #F59E0B;       /* Vàng cam */
+  --color-danger: #EF4444;        /* Đỏ tươi */
+
+  --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Thiết lập font chữ Inter toàn bộ trang */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  overflow-x: hidden;
+  width: 100%;
+}
+
+body.light-blue-theme {
+  background: var(--bg-page);
+  background-attachment: fixed;
+  color: var(--text-title);
+  min-height: 100vh;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Đảm bảo các con số luôn thẳng hàng, không bị nhảy giật */
+.tabular-number,
+.fps-badge,
+.timer-overlay strong,
+.logs-table td:first-child,
+.sub-stat-number,
+.pred-value {
+  font-family: 'JetBrains Mono', 'Inter', monospace;
+  font-variant-numeric: tabular-nums;
+  -webkit-font-feature-settings: "tnum";
+  font-feature-settings: "tnum";
+}
+
+/* Container bố cục chính - Cuộn tự nhiên, không khóa overflow hay ép chiều cao */
+.app-layout {
+  max-width: 1420px;
+  margin: 0 auto;
+  padding: 18px 24px 24px;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ==========================================================================
+   1. THẺ HEADER TRÊN CÙNG: THU GỌN THEO YÊU CẦU
+   ========================================================================== */
+.app-header {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  padding: 12px 24px;
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.header-left {
+  width: 100%;
+}
+
+.header-text-block {
+  display: flex;
+  flex-direction: column;
+}
+
+/* Dòng 1: Eyebrow text (11px, margin-bottom 2px) */
+.eyebrow-text {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  color: #0284C7;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+  display: block;
+}
+
+/* Dòng 2: Tiêu đề chính lớn (font Inter Bold 20px, margin-bottom 4px) */
+.header-title {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-title);
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  margin-bottom: 4px;
+}
+
+/* Dòng 3: Dòng mô tả bên dưới (13px, margin 0, gọn trên 1 hàng ngang desktop) */
+.header-subtitle {
+  font-size: 13px;
+  color: var(--text-muted);
+  line-height: 1.4;
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* ==========================================================================
+   2. BỐ CỤC 2 CỘT (DESKTOP) & 1 CỘT (TABLET / MOBILE)
+   ========================================================================== */
+.main-grid {
+  display: grid;
+  grid-template-columns: 1.02fr 0.98fr;
+  gap: 20px;
+}
+
+.right-column-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.right-card-section {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: var(--card-radius);
+  box-shadow: var(--card-shadow);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.card-header-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.title-with-fps {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-title);
+  letter-spacing: -0.01em;
+}
+
+.fps-badge {
+  font-size: 0.74rem;
+  font-weight: 600;
+  background: #F1F5F9;
+  border: 1px solid #E2E8F0;
+  color: var(--text-muted);
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+/* Nhãn trạng thái SẴN SÀNG & TỈNH TÁO */
+.state-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 14px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  transition: var(--transition);
+  white-space: nowrap;
+}
+
+.state-indicator-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+
+.state-badge.normal {
+  background: var(--state-ready-bg);
+  border: 1px solid var(--state-ready-border);
+  color: var(--state-ready-text);
+}
+.state-badge.normal .state-indicator-dot {
+  background: var(--color-awake);
+}
+
+.state-badge.warning {
+  background: #FEF3C7;
+  border: 1px solid #FCD34D;
+  color: #B45309;
+}
+.state-badge.warning .state-indicator-dot {
+  background: var(--color-warning);
+}
+
+.state-badge.danger {
+  background: #FEE2E2;
+  border: 1px solid #FCA5A5;
+  color: #DC2626;
+  animation: pulseBadge 0.8s infinite alternate;
+}
+.state-badge.danger .state-indicator-dot {
+  background: var(--color-danger);
+}
+
+/* ==========================================================================
+   CỘT TRÁI: KHUNG CAMERA (BO GÓC 20px)
+   ========================================================================== */
+.camera-wrapper {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  max-height: 440px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #0F172A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 3.5px solid transparent;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.08);
+  transition: border-color 0.22s ease, box-shadow 0.22s ease;
+}
+
+/* 1. Trạng thái bình thường */
+.camera-wrapper.state-normal {
+  border-color: #CBD5E1;
+}
+
+/* 2. Cảnh báo Mức 1: Vàng cam */
+.camera-wrapper.state-warning {
+  border-color: var(--color-warning);
+  box-shadow: 0 0 28px rgba(245, 158, 11, 0.35);
+}
+
+/* 3. Báo động Mức 2: Đỏ tươi nhấp nháy mạnh kèm rung khung hình */
+.camera-wrapper.state-danger {
+  border-color: var(--color-danger);
+  animation: pulseDangerBlue 0.45s infinite alternate, cameraShakeBlue 0.25s infinite ease-in-out;
+}
+
+@keyframes pulseDangerBlue {
+  0% {
+    box-shadow: 0 0 16px rgba(239, 68, 68, 0.4);
+    border-color: #EF4444;
+  }
+  100% {
+    box-shadow: 0 0 40px rgba(239, 68, 68, 0.85);
+    border-color: #DC2626;
+  }
+}
+
+@keyframes cameraShakeBlue {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-3px, 2px); }
+  50% { transform: translate(3px, -2px); }
+  75% { transform: translate(-2px, -2px); }
+  100% { transform: translate(2px, 2px); }
+}
+
+@keyframes pulseBadge {
+  0% { opacity: 0.85; }
+  100% { opacity: 1; transform: scale(1.02); }
+}
+
+/* Nhãn Camera góc trên bên trái */
+.floating-camera-tag {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(8px);
+  border: 1px solid #CBD5E1;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: var(--text-title);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.tag-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #0F172A; /* Mặc định khi tắt camera: màu đen */
+  transition: background-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.tag-dot.active {
+  background: #10B981; /* Khi bật camera: màu xanh lá tươi */
+  box-shadow: 0 0 8px rgba(16, 185, 129, 0.7);
+}
+
+/* Overlay đếm giây nhắm mắt */
+.timer-overlay {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 10;
+  background: rgba(15, 23, 42, 0.88);
+  backdrop-filter: blur(8px);
+  color: #FEF3C7;
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.timer-overlay.hidden {
+  display: none;
+}
+.timer-overlay strong {
+  color: #FBBF24;
+}
+
+.webcam-container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Lật gương webcam tự nhiên */
+.webcam-container canvas,
+.webcam-container video {
+  width: 100% !important;
+  height: 100% !important;
+  object-fit: cover;
+  transform: scaleX(-1);
+  border-radius: 17px;
+}
+
+.camera-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 24px;
+  gap: 10px;
+  color: #94A3B8;
+}
+
+.placeholder-icon-wrap {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #CBD5E1;
+  margin-bottom: 4px;
+}
+
+.placeholder-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #F8FAFC;
+}
+
+.placeholder-desc {
+  font-size: 0.84rem;
+  color: #94A3B8;
+  max-width: 290px;
+}
+.placeholder-desc strong {
+  color: #F1F5F9;
+}
+
+/* Banner nổi trên camera */
+.alert-banner {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 18px;
+  border-radius: 999px;
+  backdrop-filter: blur(10px);
+  font-size: 0.86rem;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  transition: var(--transition);
+}
+
+.alert-banner.banner-normal {
+  background: var(--state-ready-bg);
+  border: 1px solid var(--state-ready-border);
+  color: var(--state-ready-text);
+}
+.alert-banner.banner-normal .alert-icon {
+  color: var(--color-awake);
+}
+
+.alert-banner.banner-warning {
+  background: #FFFBEB;
+  border: 1px solid #FCD34D;
+  color: #92400E;
+  box-shadow: 0 4px 18px rgba(245, 158, 11, 0.25);
+}
+
+.alert-banner.banner-danger {
+  background: #FEF2F2;
+  border: 1px solid #FCA5A5;
+  color: #991B1B;
+  box-shadow: 0 6px 24px rgba(239, 68, 68, 0.35);
+  animation: pulseDangerBlue 0.4s infinite alternate;
+}
+
+/* ==========================================================================
+   HỆ THỐNG NÚT BẤM (BUTTONS) - TOUCH-FRIENDLY
+   ========================================================================== */
+.controls-row {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 12px;
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 20px;
+  min-height: 48px; /* Tối thiểu 48px chuẩn cảm ứng */
+  border-radius: 12px;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: var(--transition);
+  user-select: none;
+  outline: none;
+}
+
+/* 1. KHI CAMERA ĐANG TẮT: Nút Bật Camera nổi bật */
+.btn-primary:not(:disabled) {
+  background: var(--btn-primary-bg);
+  color: #FFFFFF;
+  box-shadow: var(--btn-primary-shadow);
+  cursor: pointer;
+}
+.btn-primary:not(:disabled):hover {
+  background: var(--btn-primary-hover);
+  box-shadow: 0 6px 18px rgba(0, 162, 232, 0.35);
+  transform: translateY(-1px);
+}
+
+/* 2. KHI CAMERA ĐANG BẬT: Nút Đang Giám Sát disabled màu xám mờ */
+.btn-primary:disabled {
+  background: #F1F5F9 !important;
+  border: 1px solid #E2E8F0 !important;
+  color: #94A3B8 !important;
+  box-shadow: none !important;
+  cursor: not-allowed !important;
+  opacity: 0.85 !important;
+}
+
+/* 3. KHI CAMERA ĐANG TẮT: Nút Tắt Camera disabled màu xám mờ */
+.btn-secondary:disabled {
+  background: #F8FAFC !important;
+  border: 1px solid #E2E8F0 !important;
+  color: #94A3B8 !important;
+  box-shadow: none !important;
+  cursor: not-allowed !important;
+  opacity: 0.65 !important;
+}
+
+/* 4. KHI CAMERA ĐANG BẬT: Nút Tắt Camera đỏ tươi nổi bật */
+.btn-secondary.btn-danger-active {
+  background: #EF4444 !important;
+  border: 1px solid #DC2626 !important;
+  color: #FFFFFF !important;
+  box-shadow: 0 4px 14px rgba(239, 68, 68, 0.35) !important;
+  cursor: pointer !important;
+  font-weight: 700 !important;
+  opacity: 1 !important;
+}
+.btn-secondary.btn-danger-active:hover {
+  background: #DC2626 !important;
+  border-color: #B91C1C !important;
+  box-shadow: 0 6px 18px rgba(239, 68, 68, 0.45) !important;
+  transform: translateY(-1px);
+}
+
+.btn-subtle {
+  background: #FFFFFF;
+  border: 1px solid #CBD5E1;
+  color: #334155;
+  min-height: 36px;
+}
+.btn-subtle:hover {
+  background: #F1F5F9;
+  border-color: #94A3B8;
+  color: #0F172A;
+}
+
+.btn-danger-pill {
+  background: var(--btn-danger-bg);
+  border: 1px solid var(--btn-danger-border);
+  color: var(--btn-danger-text);
+  font-weight: 600;
+  min-height: 36px;
+}
+.btn-danger-pill:hover {
+  background: #FEE2E2;
+  border-color: #F87171;
+  color: #B91C1C;
+}
+
+.btn-sm {
+  padding: 6px 14px;
+  font-size: 0.8rem;
+  border-radius: 8px;
+}
+
+/* Panel test âm thanh */
+.test-sound-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  padding: 14px 16px;
+  border-radius: 14px;
+}
+
+.panel-label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+}
+
+.test-btn-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.btn-outline-warning {
+  background: #FFFFFF;
+  border: 1px solid #FCD34D;
+  color: #B45309;
+  min-height: 42px;
+}
+.btn-outline-warning:hover {
+  background: #FFFBEB;
+  border-color: #F59E0B;
+}
+
+.btn-outline-danger {
+  background: #FFFFFF;
+  border: 1px solid #FECACA;
+  color: #DC2626;
+  min-height: 42px;
+}
+.btn-outline-danger:hover {
+  background: #FEF2F2;
+  border-color: #EF4444;
+}
+
+/* ==========================================================================
+   THANH TIẾN TRÌNH XÁC SUẤT AI DÀY DẶN (17px)
+   ========================================================================== */
+.probability-section {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.model-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: #E0F2FE;
+  color: #0369A1;
+}
+
+.predictions-group {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.prediction-item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.pred-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-title);
+}
+
+.pred-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dot-indicator {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+}
+.dot-indicator.danger {
+  background: var(--color-warning);
+}
+.dot-indicator.success {
+  background: var(--color-awake);
+}
+
+.pred-value {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: var(--text-title);
+}
+
+.progress-track.thick-track {
+  width: 100%;
+  height: 17px;
+  background: #E2E8F0;
+  border-radius: 999px;
+  overflow: hidden;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.06);
+}
+
+.progress-bar {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.1s linear;
+}
+
+.bar-drowsy {
+  background: linear-gradient(90deg, #F59E0B, #EF4444);
+}
+
+.bar-awake {
+  background: linear-gradient(90deg, #10B981, #059669);
+}
+
+/* ==========================================================================
+   3 THẺ CON THỐNG KÊ (HÀNG NGANG)
+   ========================================================================== */
+.stats-sub-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.sub-stat-card {
+  background: var(--sub-card-bg);
+  border: 1px solid var(--sub-card-border);
+  border-radius: var(--sub-card-radius);
+  padding: 16px 10px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: var(--transition);
+}
+
+.sub-stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(14, 116, 144, 0.05);
+}
+
+.sub-stat-number {
+  font-size: 1.65rem;
+  font-weight: 700;
+  color: var(--text-title);
+  line-height: 1.2;
+}
+
+.sub-stat-number.text-danger {
+  color: var(--color-danger);
+}
+
+.sub-stat-label {
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--text-title);
+  margin-top: 4px;
+}
+
+/* ==========================================================================
+   BẢNG NHẬT KÝ SỰ KIỆN (LOGS) - VUỐT CHẠM MƯỢT MÀ
+   ========================================================================== */
+.logs-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.logs-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.logs-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logs-counter {
+  font-size: 0.74rem;
+  font-weight: 700;
+  background: #F1F5F9;
+  border: 1px solid #E2E8F0;
+  padding: 2px 8px;
+  border-radius: 999px;
+  color: var(--text-muted);
+}
+
+.logs-actions-wrap {
+  display: flex;
+  gap: 8px;
+}
+
+.table-container {
+  max-height: 250px;
+  width: 100%;
+  overflow-y: auto;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch; /* Vuốt mượt trên iOS Safari */
+  border-radius: 12px;
+  border: 1px solid var(--card-border);
+  background: #FFFFFF;
+}
+
+.table-container::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+.table-container::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 999px;
+}
+
+.logs-table {
+  width: 100%;
+  min-width: 500px; /* Đảm bảo không bị bóp nghẹt khi màn hình nhỏ */
+  border-collapse: collapse;
+  font-size: 0.82rem;
+  text-align: left;
+}
+
+.logs-table th {
+  position: sticky;
+  top: 0;
+  background: #F8FAFC;
+  padding: 10px 14px;
+  color: var(--text-muted);
+  font-weight: 600;
+  border-bottom: 1px solid var(--card-border);
+  z-index: 5;
+  white-space: nowrap;
+}
+
+.logs-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid #F1F5F9;
+  color: var(--text-title);
+  vertical-align: middle;
+}
+
+.col-time {
+  width: 130px;
+  white-space: nowrap;
+}
+
+.log-time-row {
+  font-weight: 700;
+  font-size: 0.84rem;
+  color: var(--text-title);
+  line-height: 1.25;
+}
+
+.log-date-row {
+  font-size: 0.72rem;
+  color: var(--text-desc);
+  margin-top: 2px;
+  line-height: 1.2;
+}
+
+.col-level {
+  width: 95px;
+  white-space: nowrap;
+}
+.col-duration {
+  width: 90px;
+  white-space: nowrap;
+}
+.col-conf {
+  width: 100px;
+  white-space: nowrap;
+}
+.col-note {
+  min-width: 140px;
+}
+
+.logs-table tr:hover {
+  background: #F8FAFC;
+}
+
+.empty-row td {
+  text-align: center;
+  color: var(--text-light);
+  padding: 26px;
+}
+
+.log-badge {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-weight: 700;
+  font-size: 0.74rem;
+  white-space: nowrap !important;
+}
+
+.log-badge.level-1 {
+  background: #FEF3C7;
+  color: #D97706;
+  font-weight: 700;
+  white-space: nowrap !important;
+}
+
+.log-badge.level-2 {
+  background: #FEE2E2;
+  color: #DC2626;
+  font-weight: 700;
+  white-space: nowrap !important;
+}
+
+/* ==========================================================================
+   TOAST NOTIFICATION
+   ========================================================================== */
+.toast-container {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  z-index: 9999;
+}
+
+.toast {
+  padding: 12px 18px;
+  border-radius: 10px;
+  background: #FFFFFF;
+  border: 1px solid var(--card-border);
+  color: var(--text-title);
+  font-size: 0.85rem;
+  font-weight: 600;
+  box-shadow: 0 10px 24px rgba(14, 116, 144, 0.12);
+  animation: slideInToast 0.22s ease;
+}
+
+@keyframes slideInToast {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+.app-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 4px;
+  font-size: 0.76rem;
+  color: var(--text-desc);
+}
+
+/* ==========================================================================
+   3. RESPONSIVE BREAKPOINTS (TABLET & MOBILE)
+   ========================================================================== */
+
+/* TABLET (max-width: 1024px) */
+@media (max-width: 1024px) {
+  .app-layout {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .app-header {
+    padding: 12px 20px;
+    margin-bottom: 14px;
+  }
+
+  .header-subtitle {
+    white-space: normal;
+  }
+
+  /* Chuyển bố cục sang 1 cột dọc duy nhất: Camera nằm trên cùng */
+  .main-grid {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+
+  .card, .right-card-section {
+    padding: 20px;
+    border-radius: 18px;
+  }
+}
+
+/* MOBILE (max-width: 768px) */
+@media (max-width: 768px) {
+  .app-layout {
+    padding: 12px;
+    gap: 14px;
+  }
+
+  .app-header {
+    padding: 12px 16px;
+    border-radius: 16px;
+    margin-bottom: 14px;
+  }
+
+  .card, .right-card-section {
+    padding: 16px;
+    border-radius: 16px;
+    gap: 16px;
+  }
+
+  .camera-wrapper {
+    max-height: 380px;
+    border-radius: 16px;
+  }
+
+  /* Nút bấm chuẩn cảm ứng: tăng chiều cao tối thiểu 50px */
+  .controls-row {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+
+  .controls-row .btn {
+    min-height: 50px;
+    font-size: 0.95rem;
+    font-weight: 700;
+  }
+
+  .test-btn-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+  }
+
+  .test-btn-grid .btn {
+    min-height: 44px;
+    font-size: 0.8rem;
+    padding: 8px 10px;
+  }
+
+  .app-footer {
+    flex-direction: column;
+    gap: 4px;
+    text-align: center;
+  }
+}
+
+/* MÀN HÌNH ĐIỆN THOẠI NHỎ (max-width: 480px) */
+@media (max-width: 480px) {
+  .app-layout {
+    padding: 10px;
+    gap: 12px;
+  }
+
+  .app-header {
+    padding: 12px 14px;
+    margin-bottom: 12px;
+  }
+
+  .header-subtitle {
+    font-size: 0.82rem;
+  }
+
+  .card, .right-card-section {
+    padding: 14px;
+    border-radius: 14px;
+  }
+
+  .camera-wrapper {
+    max-height: 320px;
+    border-radius: 14px;
+  }
+
+  /* Tối ưu 3 ô thẻ thống kê trên mobile nhỏ: giữ nguyên 1 hàng ngang không bị vỡ */
+  .stats-sub-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 6px;
+  }
+
+  .sub-stat-card {
+    padding: 10px 4px;
+    border-radius: 10px;
+  }
+
+  .sub-stat-number {
+    font-size: 20px;
+    line-height: 1.15;
+  }
+
+  .sub-stat-label {
+    font-size: 11px;
+    margin-top: 2px;
+    white-space: nowrap;
+    letter-spacing: -0.02em;
+  }
+
+  /* Nút test chuyển thành 1 cột */
+  .test-btn-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .test-btn-grid .btn {
+    min-height: 44px;
+  }
+
+  .toast-container {
+    left: 14px;
+    right: 14px;
+    bottom: 14px;
+  }
+}
